@@ -156,17 +156,16 @@ class NameGame extends React.Component {
                           alignContent="center"
                           style={{height:"100%"}}>
 
-                        <Grid md={6} lg={6} xl={6} style={{margin: '5vh'}} item>
+                        <Grid md={6} lg={6} xl={6} style={{margin: '3vh'}} item>
                             <Typography variant="title">Choose a game mode!</Typography>
                         </Grid>
-
-                        <Grid md={6} lg={6} xl={6} style={{margin: '5vh'}} item>
+                        <Grid md={6} lg={6} xl={6} style={{margin: '4vh'}} item>
                             <Button fullWidth color="primary" variant="contained" onClick={this.handleNewGame}>standard</Button>
                         </Grid>
-                        <Grid md={6} lg={6} xl={6} onClick={this.handleNewGame} style={{margin: '5vh'}} item>
+                        <Grid md={6} lg={6} xl={6} onClick={this.handleNewGame} style={{margin: '4vh'}} item>
                             <Button fullWidth color="secondary" variant="contained" >reverse</Button>
                         </Grid>
-                        <Grid md={6} lg={6} xl={6} style={{margin: '5vh'}} item>
+                        <Grid md={6} lg={6} xl={6} style={{margin: '4vh'}} item>
                             <Button color="inherit" variant="contained" fullWidth onClick={this.handleNewGame}>Matt</Button>
                         </Grid>
                     </Grid>
