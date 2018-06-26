@@ -5,7 +5,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
-import Slide from '@material-ui/core/Slide';
+import Leaderboard from './LeaderBoard';
 import NameGame from './NameGame';
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import ErrorIcon from "@material-ui/icons/Error";
@@ -150,7 +150,7 @@ class AuthenticatedHome extends React.Component {
                     </Tabs>
                 </AppBar>
                 {value === 0 && <TabContainer><NameGame submitAnswer={this.submitAnswer} stopGame={this.stopGame} startNewGame={this.startNewGame} gameOn={this.state.gameOn} gameData={this.state.gameData}/></TabContainer>}
-                {value === 1 && <TabContainer><div>Leaderboard Feature is not yet complete</div></TabContainer>}
+                {value === 1 && <Leaderboard apiHost={this.props.apiHost}/>}
 
                 <Snackbar
                     anchorOrigin={{

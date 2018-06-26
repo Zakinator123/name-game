@@ -53,7 +53,7 @@ class NameGame extends React.Component {
             {
                 let image_choices = choices.map((image) => (
                     <Grid onClick={e => this.props.submitAnswer(image.choice.id, e)} xs={12} sm={6} md={6} lg={6} xl={2} key={image.choice.id} item>
-                        <Button><img width="95%" height="100%" src={"http://" + image.choice.url} alt={image.choice.alt}/></Button>
+                        <Button><img width="95%" height="100%" src={"https://" + image.choice.url} alt={image.choice.alt}/></Button>
                     </Grid>)
                 );
 
