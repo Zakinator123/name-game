@@ -32,27 +32,21 @@ class App extends Component {
         super(props);
         this.state = {
             loggedIn: false,
-            connected: false,
         };
 
         this.apiHost = 'https://api.the-name-game.com';
 
-        this.gearmasterLoggedIn = this.gearmasterLoggedIn.bind(this);
-        this.gearmasterLoggedOut = this.gearmasterLoggedOut.bind(this);
-        this.connectionEstablished = this.connectionEstablished.bind(this);
-    }
-
-    connectionEstablished() {
-        this.setState({connected: true})
+        this.logIn = this.logIn.bind(this);
+        this.logOut = this.logOut.bind(this);
     }
 
     // Event handler called upon successful login.
-    gearmasterLoggedIn() {
+   logIn() {
         this.setState({loggedIn: true})
     }
 
     //Event handler called upon logout
-    gearmasterLoggedOut() {
+    logOut() {
         this.setState({loggedIn: false});
         let storedToken = sessionStorage.getItem('token');
         fetch(this.apiHost + '/logout', {
@@ -82,10 +76,10 @@ class App extends Component {
                       style={{height:"100%"}}>
 
                     <Grid md={6} lg={6} xl={6} style={{margin: '10vh'}} item>
-                        <LoginDialog logIn={this.gearmasterLoggedIn} apiHost={this.apiHost} type="Signup"/>
+                        <LoginDialog logIn={this.logIn} apiHost={this.apiHost} type="Signup"/>
                     </Grid>
                     <Grid md={6} lg={6} xl={6} style={{margin: '3vh'}} item>
-                        <LoginDialog logIn={this.gearmasterLoggedIn} apiHost={this.apiHost} type="Login"/>
+                        <LoginDialog logIn={this.logIn} apiHost={this.apiHost} type="Login"/>
                     </Grid>
                 </Grid>
             </div>
@@ -94,7 +88,7 @@ class App extends Component {
         return (
             <div>
                 <MuiThemeProvider theme={theme} >
-                    <TopBar loggedIn={this.state.loggedIn} connected={this.state.connected} apiHost={this.apiHost} logOut={this.gearmasterLoggedOut}/>
+                    <TopBar loggedIn={this.state.loggedIn} apiHost={this.apiHost} logOut={this.logOut}/>
                     {(this.state.loggedIn) ?
                         <AuthenticatedHome data={this.state.data} loggedIn={this.state.loggedIn} apiHost={this.apiHost}/> :
                         nonAuthenticatedHomePage

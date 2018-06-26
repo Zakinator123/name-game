@@ -14,7 +14,7 @@ export default class LoginDialog extends React.Component {
         super(props);
         this.state = {
             open: false,
-            email: '',
+            username: '',
             password: '',
             error: false,
             errorMessageVisibility: 'hidden',
@@ -30,8 +30,8 @@ export default class LoginDialog extends React.Component {
         this.setState({ open: false });
     };
 
-    handleChangeEmail = event => {
-        this.setState({email: event.target.value});
+    handleChangeUsername = event => {
+        this.setState({username: event.target.value});
     };
 
     handleChangePassword = event => {
@@ -41,10 +41,11 @@ export default class LoginDialog extends React.Component {
     handleSubmit = () => {
         this.setState({error: false, errorMessageVisibility: 'hidden'});
 
-        //if signup, signup, else if login login.
-        fetch(this.props.apiHost + '/login', {
+        //if signup, signup, else if login login
+        let signupOrLogin = this.props.type.toLowerCase();
+        fetch(this.props.apiHost + "/" + signupOrLogin, {
             method: 'POST',
-            body: JSON.stringify({email: this.state.email, password: this.state.password}),
+            body: JSON.stringify({username: this.state.username, password: this.state.password}),
             headers:{
                 'Content-Type': 'application/json'
             },
@@ -52,12 +53,14 @@ export default class LoginDialog extends React.Component {
         }).then(response => response.json())
             .catch(error => console.error('Error with HTTP request:', error))
             .then(response => {
-                if (response['status'] !== 'Success')
+                console.log(response);
+                if (response['status'] != 'Success')
                     this.setState({error: true, errorMessageVisibility: 'visible', errorMessage: response['message']});
                 else {
                     sessionStorage.setItem('token', response['token']);
                     this.handleClose();
-                    this.props.logIn();
+                    if (signupOrLogin == "login")
+                        this.props.logIn();
                 }
             });
     };
@@ -78,9 +81,8 @@ export default class LoginDialog extends React.Component {
                             error={this.state.error}
                             margin="dense"
                             id="name"
-                            onChange={this.handleChangeEmail}
+                            onChange={this.handleChangeUsername}
                             label="Username"
-                            type="email"
                             fullWidth
                         />
                         <TextField
@@ -98,7 +100,7 @@ export default class LoginDialog extends React.Component {
                         <Button onClick={this.handleClose} color="primary">
                             <Typography variant="button" style={{color:'red'}} align="left">Cancel</Typography>
                         </Button>
-                        <Button style={{backgroundColor: '#0097a7'}} color="primary">
+                        <Button style={{backgroundColor: '#0097a7'}} color="primary" onClick={this.handleSubmit}>
                             <Typography variant="button" style={{color:'white'}} align="left">{this.props.type}</Typography>
                         </Button>
                     </DialogActions>

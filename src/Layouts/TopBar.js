@@ -10,7 +10,9 @@ const styles = theme => ({
     root: {
         flexGrow: 1,
     },
-    flex: {},
+    flex: {
+        flex: 1,
+    },
 });
 
 
@@ -19,14 +21,15 @@ function TopBar(props) {
 
     let LogoutButton;
 
-    if (props.connected == false)
+    if (props.loggedIn == false)
         LogoutButton = <Button style={{visibility: 'hidden' }} color="primary" variant="contained" ><Typography variant="button" style={{visibility: 'hidden'}}>Login</Typography> </Button>;
-    else if (props.loggedIn === false)
+    else {
         LogoutButton = (
             <Button color="primary" variant="contained" onClick={props.logOut}>
                 <Typography variant="button" style={{color: "#FFFFFF"}}>Logout</Typography>
             </Button>
         );
+    }
 
     return (
         <div className="TopBar">
