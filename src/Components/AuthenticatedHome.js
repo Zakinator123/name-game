@@ -96,7 +96,35 @@ class AuthenticatedHome extends React.Component {
                 if (response['status'] != 'Success')
                     this.setState({snackbarVisible: true, snackbarMessage:response['message'], variant: 'error'});
                 else {
-                    this.setState({gameOn: false, gameOn: false, gameData: ''})
+                    this.setState({gameOn: false, gameData: ''})
+                }
+            });
+    };
+
+    handleSnackbarClose = () => {
+        this.setState({snackbarVisible : false})
+    };
+
+    submitAnswer = (id, e) => {
+        console.log(id);
+
+        fetch(this.props.apiHost + "/game", {
+            method: 'POST',
+            body: JSON.stringify({token: sessionStorage.getItem('token'), answer: id}),
+            headers:{
+                'Content-Type': 'application/json'
+            },
+            mode: 'cors'
+        }).then(response => response.json())
+            .catch(error => console.error('Error with HTTP request:', error))
+            .then(response => {
+                console.log(response);
+                if (response['status'] != 'Success')
+                    this.setState({error: true, errorMessageVisibility: 'visible', errorMessage: response['message']});
+                else {
+                    (response['last_answer_submission'] == 'Correct') ?
+                        this.setState({gameData: response, snackbarVisible: true, snackbarMessage:response['last_answer_submission'], variant: 'success'}) :
+                        this.setState({gameData: response, snackbarVisible: true, snackbarMessage:response['last_answer_submission'], variant: 'error'})
                 }
             });
     };
@@ -108,22 +136,20 @@ class AuthenticatedHome extends React.Component {
         return (
             <div className={classes.root}>
                 <AppBar position="static" color="default">
-                    <Slide in={true} direction='right' style={{ transitionDelay: 300}}  mountOnEnter unmountOnExit>
-                        <Tabs
-                            value={value}
-                            onChange={this.handleChange}
-                            indicatorColor="primary"
-                            textColor="primary"
-                            centered
-                            scrollButtons="on"
-                            className={classes.tabs}>
+                    <Tabs
+                        value={value}
+                        onChange={this.handleChange}
+                        indicatorColor="primary"
+                        textColor="primary"
+                        centered
+                        scrollButtons="on"
+                        className={classes.tabs}>
 
-                            <Tab label="Play the Name Game" />
-                            <Tab label="Leaderboard" />
-                        </Tabs>
-                    </Slide>
+                        <Tab label="Play the Name Game" />
+                        <Tab label="Leaderboard" />
+                    </Tabs>
                 </AppBar>
-                {value === 0 && <TabContainer><NameGame stopGame={this.stopGame} startNewGame={this.startNewGame} gameOn={this.state.gameOn} gameData={this.state.gameData}/></TabContainer>}
+                {value === 0 && <TabContainer><NameGame submitAnswer={this.submitAnswer} stopGame={this.stopGame} startNewGame={this.startNewGame} gameOn={this.state.gameOn} gameData={this.state.gameData}/></TabContainer>}
                 {value === 1 && <TabContainer><div>Leaderboard Feature is not yet complete</div></TabContainer>}
 
                 <Snackbar
@@ -133,7 +159,7 @@ class AuthenticatedHome extends React.Component {
                     }}
                     style={{margin: '2vh'}}
                     open={this.state.snackbarVisible}
-                    autoHideDuration={7000}
+                    autoHideDuration={1000}
                     onClose={this.handleSnackbarClose}
                 >
                     <MySnackbarContentWrapper

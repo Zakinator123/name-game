@@ -52,7 +52,7 @@ class NameGame extends React.Component {
             if (data.question.choice_type == "image")
             {
                 let image_choices = choices.map((image) => (
-                    <Grid md={6} lg={6} xl={3} key={image.choice.id}>
+                    <Grid onClick={e => this.props.submitAnswer(image.choice.id, e)} xs={12} sm={6} md={6} lg={6} xl={2} key={image.choice.id} item>
                         <Button><img width="95%" height="100%" src={"http://" + image.choice.url} alt={image.choice.alt}/></Button>
                     </Grid>)
                 );
@@ -83,12 +83,13 @@ class NameGame extends React.Component {
                             <Grid container
                                   alignItems='center'
                                   direction="row"
-                                  alignContent="center"
+                                  alignContent="stretch"
                                   style={{height:"100%"}}>
 
                                 {image_choices}
 
                             </Grid>
+                            <br/>
                             <Grid item>
                                 <Button variant="contained" onClick={this.props.stopGame} color='primary' fullWidth>End Game</Button>
                             </Grid>
@@ -99,8 +100,8 @@ class NameGame extends React.Component {
             else //reverse mode
             {
                 let text_choices = choices.map((text) => (
-                    <Grid md={6} lg={6} xl={3} key={text.id}>
-                        <Button><Typography>{text.choice}</Typography></Button>
+                    <Grid md={6} lg={6} xl={3} key={text.id} item>
+                        <Button onClick={e => this.props.submitAnswer(text.id, e)}><Typography>{text.choice}</Typography></Button>
                     </Grid>)
                 );
 
@@ -124,8 +125,8 @@ class NameGame extends React.Component {
                                 <Typography variant="title">{"Who is in this picture?"}</Typography>
                                 <br/>
                             </Grid>
-                            <Grid item>
-                                <img width="95%" height="100%" src={"http://" + data.question.question_image.url} alt={data.question.question_image.alt}/>
+                            <Grid item md={6} lg={6} xl={3}>
+                                <img width="95%" height="100%" src={"https://" + data.question.question_image.url} alt={data.question.question_image.alt}/>
                             </Grid>
                             <Divider/>
                             <Grid container
@@ -138,7 +139,7 @@ class NameGame extends React.Component {
 
                             </Grid>
                             <Grid item>
-                                <Button variant="contained" onClick={this.props.stopGame} color='primary' fullWidth>End Game</Button>
+                                <Button onClick={this.props.stopGame} fullWidth><Typography style={{color:'red'}}>End Game</Typography></Button>
                             </Grid>
                         </Grid>
                     </div>
@@ -156,13 +157,17 @@ class NameGame extends React.Component {
                           style={{height:"100%"}}>
 
                         <Grid md={6} lg={6} xl={6} style={{margin: '5vh'}} item>
-                            <Button onClick={this.handleNewGame}>standard</Button>
+                            <Typography variant="title">Choose a game mode!</Typography>
+                        </Grid>
+
+                        <Grid md={6} lg={6} xl={6} style={{margin: '5vh'}} item>
+                            <Button fullWidth color="primary" variant="contained" onClick={this.handleNewGame}>standard</Button>
                         </Grid>
                         <Grid md={6} lg={6} xl={6} onClick={this.handleNewGame} style={{margin: '5vh'}} item>
-                            <Button>reverse</Button>
+                            <Button fullWidth color="secondary" variant="contained" >reverse</Button>
                         </Grid>
                         <Grid md={6} lg={6} xl={6} style={{margin: '5vh'}} item>
-                            <Button onClick={this.handleNewGame}>Matt</Button>
+                            <Button color="inherit" variant="contained" fullWidth onClick={this.handleNewGame}>Matt</Button>
                         </Grid>
                     </Grid>
                 </div>
